@@ -1,0 +1,38 @@
+class Car {
+    field int x;
+    field int y;
+    field int width;
+    field int height;
+
+    constructor Car new() {
+        let x = 160;   // горизонтально центрированная позиция
+        let y = 240;   // положение в нижней части экрана
+        let width = 20;
+        let height = 10;
+        return this;
+    }
+
+    method void moveLeft() {
+        let x = x - 5;
+        return;
+    }
+
+    method void moveRight() {
+        let x = x + 5;
+        return;
+    }
+
+    method void draw() {
+        do Screen.setColor(true);  // рисуем машину черным цветом
+        do Screen.drawRectangle(x - 10, y - 5, width, height);
+        return;
+    }
+
+    method int getX() {
+        return x;
+    }
+
+    method int getY() {
+        return y;
+    }
+}

@@ -1,0 +1,55 @@
+class Obstacle {
+    field int x;
+    field int y;
+    field int width;
+    field int height;
+
+    constructor Obstacle new(int xPos, int yPos, int w, int h) {
+        let x = xPos;
+        let y = yPos;
+        let width = w;
+        let height = h;
+        return this;
+    }
+
+    // инициализация препятствия
+    method void init() {
+        let y = 0;
+        return;
+    }
+
+    // двигаем препятствия вниз
+    method void update() {
+        let y = y + 5;
+        return;
+    }
+
+    // отрисовка препятствия в виде прямоугольника width x height
+    method void draw() {
+        var int i, j;
+        let i = 0;
+        do Screen.setColor(true);  // устанавливаем черный цвет
+        while ( i < width ) {
+            let j = 0;
+            while ( j < height ) {
+                do Screen.drawPixel(x + i, y + j);
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method boolean checkCollision(int carX, int carY, int carWidth, int carHeight) {
+        return (x < carX + carWidth) & (x + width > carX) &
+               (y < carY + carHeight) & (y + height > carY);
+    }
+
+    method int getX() {
+        return x;
+    }
+
+    method int getY() {
+        return y;
+    }
+}

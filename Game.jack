@@ -1,0 +1,91 @@
+class Game {
+    field int score;
+    field Car car;
+    field Obstacle obs;
+    field boolean gameOver;
+
+    constructor Game new() {
+        let score = 0;
+        let gameOver = false;
+        let car = Car.new();
+        let obs = Obstacle.new(150, 0, 20, 20);
+        do obs.init();
+        return this;
+    }
+
+    method void run() {
+        var int frame;
+        var char key;
+        let frame = 0;
+        do Screen.clearScreen(); // очищаем экран перед началом игры
+
+        let key = Keyboard.keyPressed();
+        while ( ~( (key = 65) | (key = 68) ) ) {
+            let key = Keyboard.keyPressed();
+        }
+
+        while ( ~gameOver ) {
+            let key = Keyboard.keyPressed();
+            do processInput(key);
+            do obs.update();
+
+            if ( checkCollision() ) {
+                let gameOver = true;
+            }
+
+            // если препятствие вышло за нижнюю границу экрана, увеличиваем счёт и сбрасываем его положение
+            if ( obs.getY() > 256 ) {
+                let score = score + 1;
+                do obs.init();
+            }
+
+            // очищаем экран и перерисовываем все объекты
+            do Screen.clearScreen();
+            do car.draw();
+            do obs.draw();
+            do drawScore();
+
+            do wait(1);
+            let frame = frame + 1;
+        }
+        return;
+    }
+
+    method void processInput(char key) {
+        if ( key = 65 ) {
+            do car.moveLeft();
+        } else {
+            if ( key = 68 ) {
+                do car.moveRight();
+            }
+        }
+        return;
+    }
+
+    method boolean checkCollision() {
+        var int cx, cy;
+        let cx = car.getX();
+        let cy = car.getY();
+        return obs.checkCollision(cx - 10, cy - 5, 20, 10);
+    }
+
+    method void drawScore() {
+        do Output.printString("Score: ");
+        do Output.printInt(score);
+        do Output.println();
+        return;
+    }
+
+    method void wait(int time) {
+        var int i, j;
+        let i = 0;
+        while ( i < time ) {
+            let j = 0;
+            while ( j < 1000 ) {
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+}
