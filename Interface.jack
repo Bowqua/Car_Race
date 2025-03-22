@@ -1,0 +1,43 @@
+class Interface {
+    field String welcomeMessage;
+    field String scoreMessage;
+    field String finalMessage;
+
+    constructor Interface new() {
+        let welcomeMessage = "Press Enter to Start. Use A/D to move. ESC to quit.";
+        let scoreMessage = "Score: ";
+        let finalMessage = "Game Over. Press Enter to restart.";
+        return this;
+    }
+
+    method void drawWelcomeWindow() {
+        do Screen.clearScreen();
+        do Output.moveCursor(10, 10);
+        do Output.printString(welcomeMessage);
+        return;
+    }
+
+    method void drawPlayerScore(int score) {
+        do Output.moveCursor(0, 0);
+        do Output.printString(scoreMessage);
+        do Output.printInt(score);
+        return;
+    }
+
+    method void drawFinalWindow(int score) {
+        do Screen.clearScreen();
+        do Output.moveCursor(10, 10);
+        do Output.printString(finalMessage);
+        do Output.moveCursor(11, 10);
+        do Output.printString("Final Score: ");
+        do Output.printInt(score);
+        return;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(welcomeMessage);
+        do Memory.deAlloc(scoreMessage);
+        do Memory.deAlloc(finalMessage);
+        return;
+    }
+}
