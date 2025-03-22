@@ -1,12 +1,14 @@
 class HeroVehicle {
     field int x, y;
     field int xSize, ySize;
+    field int margin;
 
     constructor HeroVehicle new(int Ax, int Ay) {
-        let x = Ax;
+        let x = 400 - xSize - margin;
         let y = Ay;
         let xSize = 48;
         let ySize = 32;
+        let margin = 10;
         return this;
     }
 
