@@ -1,0 +1,49 @@
+class HeroVehicle {
+    field int x, y;
+    field int xSize, ySize;
+
+    constructor HeroVehicle new(int Ax, int Ay) {
+        let x = Ax;
+        let y = Ay;
+        let xSize = 48;
+        let ySize = 32;
+        return this;
+    }
+
+    method void move(int dx, int dy) {
+        if ((x + dx) > -1 & ((x + dx + xSize) < 513)) {
+            let x = x + dx;
+        }
+        if ((y + dy) > -1 & ((y + dy + ySize) < 257)) {
+            let y = y + dy;
+        }
+        return;
+    }
+
+    method int getX() {
+        return x;
+    }
+
+    method int getY() {
+        return y;
+    }
+
+    method int getXSize() {
+        return xSize;
+    }
+
+    method int getYSize() {
+        return ySize;
+    }
+
+    method void draw() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + xSize, y + ySize);
+        return;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

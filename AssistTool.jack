@@ -1,0 +1,33 @@
+class AssistTool {
+    function int mod(int number, int base) {
+        while (number > base) {
+            let number = number - base;
+        }
+        while (number < 0) {
+            let number = number + base;
+        }
+        return number;
+    }
+
+    function int abs(int number) {
+        if (number < 0) {
+            let number = -number;
+        }
+        return number;
+    }
+
+    function void drawRectangleByShift(int x1, int y1, int x2, int y2, int xShift, int yShift) {
+        do Screen.drawRectangle(x1 + xShift, y1 + yShift, x2 + xShift, y2 + yShift);
+        return;
+    }
+
+    function void drawLineByShift(int x1, int y1, int x2, int y2, int xShift, int yShift) {
+        do Screen.drawLine(x1 + xShift, y1 + yShift, x2 + xShift, y2 + yShift);
+        return;
+    }
+
+    function void drawPixelByShift(int x, int y, int xShift, int yShift) {
+        do Screen.drawPixel(x + xShift, y + yShift);
+        return;
+    }
+}

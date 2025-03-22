@@ -1,0 +1,65 @@
+class OpposingVehicle {
+    field int x, y;
+    field int xSize, ySize;
+    field boolean alive;
+
+    constructor OpposingVehicle new(int Ax, int Ay) {
+        let xSize = 48;
+        let ySize = 32;
+        do reborn(Ax, Ay);
+        return this;
+    }
+
+    method void reborn(int Ax, int Ay) {
+        let alive = true;
+        let x = Ax;
+        let y = Ay;
+        return;
+    }
+
+    method void die() {
+        let alive = false;
+        return;
+    }
+
+    method void move(int dx, int dy) {
+        let x = x + dx;
+        let y = y + dy;
+        return;
+    }
+
+    method boolean onScreen() {
+        return (((x > -1) & ((x + xSize) < 513)) & ((y > -1) & ((y + ySize) < 257)));
+    }
+
+    method int getX() {
+        return x;
+    }
+
+    method int getY() {
+        return y;
+    }
+
+    method int getXSize() {
+        return xSize;
+    }
+
+    method int getYSize() {
+        return ySize;
+    }
+
+    method boolean isAlive() {
+        return alive;
+    }
+
+    method void draw() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + xSize, y + ySize);
+        return;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

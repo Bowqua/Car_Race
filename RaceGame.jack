@@ -1,0 +1,206 @@
+class RaceGame {
+    field boolean isRunning;
+    field int score;
+    field HeroVehicle player;
+    field Array enemies;            
+    field int enemiesCount;
+    field Road road;
+    field Interface ui;
+    field Random rnd;
+    field int tick;
+    field int spawnRate;
+    field int enemySpeed;
+    field Array enemySpawnYCoords;  
+
+    constructor RaceGame new() {
+        var int i;
+        var OpposingVehicle currentEnemy;
+        let score = 0;
+        let isRunning = true;
+        let player = HeroVehicle.new(26, 96);
+        let enemiesCount = 8;
+        let enemies = Array.new(enemiesCount);
+        let i = 0;
+
+        while (i < enemiesCount) {
+            let enemies[i] = OpposingVehicle.new(16, 16);
+            let currentEnemy = enemies[i];
+            do currentEnemy.die();  
+            let i = i + 1;
+        }
+
+        let road = Road.new();
+        let ui = Interface.new();
+        let rnd = Random.new(12345); 
+        let spawnRate = 20; 
+        let enemySpeed = 5;
+        let tick = 0;
+        let enemySpawnYCoords = Array.new(4);
+        let enemySpawnYCoords[0] = 16;
+        let enemySpawnYCoords[1] = 80;
+        let enemySpawnYCoords[2] = 144;
+        let enemySpawnYCoords[3] = 208;
+
+        return this;
+    }
+
+    method void run() {
+        var int deadCount;
+        var char key;
+        do ui.drawWelcomeWindow();
+        while (~(Keyboard.keyPressed() = 128)) { }
+        do Screen.clearScreen();
+
+        while (~(isRunning = false)) {
+            let key = Keyboard.keyPressed();
+            if (key = 65) { do player.move(-5, 0); }
+            if (key = 68) { do player.move(5, 0); }
+            if (key = 140) { let isRunning = false; }
+
+            do moveEnemies();
+            do road.moveMarking(enemySpeed);
+
+            let tick = tick + 1;
+            if (tick = spawnRate) {
+                do trySpawnEnemy();
+                let tick = 0;
+            }
+
+            let deadCount = handleEnemyPasses();
+            let score = score + deadCount;
+            if (handleCollision()) {
+                let isRunning = false;
+            }
+
+            do drawFrame();
+            do Sys.wait(20);
+        }
+
+        do ui.drawFinalWindow(score);
+        while (~(Keyboard.keyPressed() = 128)) { }
+        return;
+    }
+
+    method void drawFrame() {
+        do Screen.clearScreen();
+        do road.drawMarking();
+        do player.draw();
+        do drawEnemies();
+        do ui.drawPlayerScore(score);
+        return;
+    }
+
+    method void moveEnemies() {
+        var int i;
+        var OpposingVehicle enemy;
+
+        let i = 0;
+        while (i < enemiesCount) {
+            let enemy = enemies[i];
+            if (enemy.isAlive()) {
+                do enemy.move(-enemySpeed, 0);
+                if (enemy.getX() < 0) {
+                    do enemy.die();
+                }
+            }
+
+            let i = i + 1;
+        }
+    
+        return;
+    }
+
+    method void drawEnemies() {
+        var int i;
+        var OpposingVehicle enemy;
+
+        let i = 0;
+        while (i < enemiesCount) {
+            let enemy = enemies[i];
+            if (enemy.isAlive()) { do enemy.draw(); }
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    method void trySpawnEnemy() {
+        var int index, caseIndex;
+        var OpposingVehicle enemy;
+        let caseIndex = rnd.next(4);
+
+        let index = 0;
+        while (index < enemiesCount) {
+            let enemy = enemies[index];
+            if (~(enemy.isAlive())) {
+                do enemy.reborn(512 - enemy.getXSize(), enemySpawnYCoords[caseIndex]);
+                return;
+            }
+
+            let index = index + 1;
+        }
+
+        return;
+    }
+    method int handleEnemyPasses() {
+        var int i, count;
+        var OpposingVehicle enemy;
+        let count = 0;
+
+        let i = 0;
+        while (i < enemiesCount) {
+            let enemy = enemies[i];
+            if (enemy.isAlive()) {
+                if (enemy.getX() < 0) {
+                    let count = count + 1;
+                    do enemy.die();
+                }
+            }
+
+            let i = i + 1;
+        }
+
+        return count;
+    }
+
+    method boolean handleCollision() {
+        var int i;
+        var OpposingVehicle enemy;
+
+        let i = 0;
+        while (i < enemiesCount) {
+            let enemy = enemies[i];
+            if (enemy.isAlive()) {
+                if (doCollision(player.getX(), player.getY(),
+                                enemy.getX(), enemy.getY(),
+                                player.getXSize(), player.getYSize(),
+                                enemy.getXSize(), enemy.getYSize())) {
+                    return true;
+                }
+            }
+
+            let i = i + 1;
+        }
+        
+        return false;
+    }
+
+    method boolean doCollision(int x1, int y1, int x2, int y2,
+                                 int w1, int h1, int w2, int h2) {
+        if ((x1 + w1) < x2) { return false; }
+        if (x1 > (x2 + w2)) { return false; }
+        if ((y1 + h1) < y2) { return false; }
+        if (y1 > (y2 + h2)) { return false; }
+        return true;
+    }
+
+    method void dispose() {
+        do player.dispose();
+        do Memory.deAlloc(enemies);
+        do road.dispose();
+        do rnd.dispose();
+        do ui.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}
