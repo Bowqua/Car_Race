@@ -51,7 +51,7 @@ class RaceGame {
         while (~(Keyboard.keyPressed() = 128)) { }
         do Screen.clearScreen();
 
-        while (~(isRunning = false)) {
+        while (isRunning = false) {
             let key = Keyboard.keyPressed();
             if (key = 65) { do player.move(-5, 0); }
             if (key = 68) { do player.move(5, 0); }
