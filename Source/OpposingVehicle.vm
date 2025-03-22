@@ -1,0 +1,124 @@
+function OpposingVehicle.new 0
+    push constant 5
+    call Memory.alloc 1
+    pop pointer 0
+    push constant 48
+    pop this 2
+    push constant 32
+    pop this 3
+    push pointer 0
+    push argument 0
+    push argument 1
+    call OpposingVehicle.reborn 3
+    pop temp 0
+    push pointer 0
+    return
+function OpposingVehicle.reborn 0
+    push argument 0
+    pop pointer 0
+    push constant 1
+    neg
+    pop this 4
+    push argument 1
+    pop this 0
+    push argument 2
+    pop this 1
+    push constant 0
+    return
+function OpposingVehicle.die 0
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop this 4
+    push constant 0
+    return
+function OpposingVehicle.move 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    push argument 1
+    add
+    pop this 0
+    push this 1
+    push argument 2
+    add
+    pop this 1
+    push constant 0
+    return
+function OpposingVehicle.onScreen 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    push constant 1
+    neg
+    gt
+    push this 0
+    push this 2
+    add
+    push constant 513
+    lt
+    and
+    push this 1
+    push constant 1
+    neg
+    gt
+    push this 1
+    push this 3
+    add
+    push constant 257
+    lt
+    and
+    and
+    return
+function OpposingVehicle.getX 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    return
+function OpposingVehicle.getY 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    return
+function OpposingVehicle.getXSize 0
+    push argument 0
+    pop pointer 0
+    push this 2
+    return
+function OpposingVehicle.getYSize 0
+    push argument 0
+    pop pointer 0
+    push this 3
+    return
+function OpposingVehicle.isAlive 0
+    push argument 0
+    pop pointer 0
+    push this 4
+    return
+function OpposingVehicle.draw 0
+    push argument 0
+    pop pointer 0
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push this 0
+    push this 1
+    push this 0
+    push this 2
+    add
+    push this 1
+    push this 3
+    add
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 0
+    return
+function OpposingVehicle.dispose 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
+    return
