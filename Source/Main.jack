@@ -3,6 +3,7 @@ class Main {
         var RaceGame game;
         let game = RaceGame.new();
         do game.run();
+        do game.dispose();
         return;
     }
 }
