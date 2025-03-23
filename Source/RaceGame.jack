@@ -13,37 +13,36 @@ class RaceGame {
     field Array enemySpawnYCoords;  
 
     constructor RaceGame new() {
-    var int i;
-    var OpposingVehicle currentEnemy;
-    let score = 0;
-    let isRunning = true;
-    let player = HeroVehicle.new(26, 96);
-    let enemiesCount = 6;
-    let enemies = Array.new(enemiesCount);
-    let i = 0;
-    while (i < enemiesCount) {
-        let enemies[i] = OpposingVehicle.new(16, 16);
-        let currentEnemy = enemies[i];
-        do currentEnemy.die();  
-        let i = i + 1;
-    }
+        var int i;
+        var OpposingVehicle currentEnemy;
+        let score = 0;
+        let isRunning = true;
+        let player = HeroVehicle.new(26, 96);
+        let enemiesCount = 6;
+        let enemies = Array.new(enemiesCount);
+        let i = 0;
+        while (i < enemiesCount) {
+            let enemies[i] = OpposingVehicle.new(16, 16);
+            let currentEnemy = enemies[i];
+            do currentEnemy.die();  
+            let i = i + 1;
+        }
 
-    let road = Road.new();
-    let ui = Interface.new();
-    let rnd = Random.new(12345); 
-    let spawnRate = 35; 
-    let enemySpeed = 5;
-    let tick = 0;
-    
-    let enemySpawnYCoords = Array.new(4);
-    let i = 0;  
-    while (i < 4) {
-        let enemySpawnYCoords[i] = 16 + (64 * i);
-        let i = i + 1;
+        let road = Road.new();
+        let ui = Interface.new();
+        let rnd = Random.new(12345); 
+        let spawnRate = 35; 
+        let enemySpeed = 5;
+        let tick = 0;
+        
+        let enemySpawnYCoords = Array.new(4);
+        let i = 0;
+        while (i < 4) {
+            let enemySpawnYCoords[i] = 16 + (64 * i);
+            let i = i + 1;
+        }
+        return this;
     }
-    
-    return this;
-}
 
     method void run() {
         var int deadCount;
@@ -52,7 +51,7 @@ class RaceGame {
         while (~(Keyboard.keyPressed() = 128)) { }
         do Screen.clearScreen();
 
-        while (~(isRunning = false)) {
+        while (isRunning) {
             let key = Keyboard.keyPressed();
             if (key = 131) { do player.move(0, -10); }
             if (key = 133) { do player.move(0, 10); }
@@ -94,7 +93,6 @@ class RaceGame {
     method void moveEnemies() {
         var int i;
         var OpposingVehicle enemy;
-
         let i = 0;
         while (i < enemiesCount) {
             let enemy = enemies[i];
@@ -104,24 +102,22 @@ class RaceGame {
                     do enemy.die();
                 }
             }
-
             let i = i + 1;
         }
-    
         return;
     }
 
     method void drawEnemies() {
         var int i;
         var OpposingVehicle enemy;
-
         let i = 0;
         while (i < enemiesCount) {
             let enemy = enemies[i];
-            if (enemy.isAlive()) { do enemy.draw(); }
+            if (enemy.isAlive()) {
+                do enemy.draw();
+            }
             let i = i + 1;
         }
-
         return;
     }
 
@@ -129,7 +125,6 @@ class RaceGame {
         var int index, caseIndex;
         var OpposingVehicle enemy;
         let caseIndex = rnd.next(4);
-
         let index = 0;
         while (index < enemiesCount) {
             let enemy = enemies[index];
@@ -137,17 +132,15 @@ class RaceGame {
                 do enemy.reborn(512 - enemy.getXSize(), enemySpawnYCoords[caseIndex]);
                 return;
             }
-
             let index = index + 1;
         }
-
         return;
     }
+
     method int handleEnemyPasses() {
         var int i, count;
         var OpposingVehicle enemy;
         let count = 0;
-
         let i = 0;
         while (i < enemiesCount) {
             let enemy = enemies[i];
@@ -157,17 +150,14 @@ class RaceGame {
                     do enemy.die();
                 }
             }
-
             let i = i + 1;
         }
-
         return count;
     }
 
     method boolean handleCollision() {
         var int i;
         var OpposingVehicle enemy;
-
         let i = 0;
         while (i < enemiesCount) {
             let enemy = enemies[i];
@@ -179,28 +169,39 @@ class RaceGame {
                     return true;
                 }
             }
-
             let i = i + 1;
         }
-        
         return false;
     }
 
     method boolean doCollision(int x1, int y1, int x2, int y2,
-                             int w1, int h1, int w2, int h2) {
-    if (((x1 + w1) < x2) | (x1 > (x2 + w2)) | ((y1 + h1) < y2) | (y1 > (y2 + h2))) {
-        return false;
+                                 int w1, int h1, int w2, int h2) {
+        if (((x1 + w1) < x2) | (x1 > (x2 + w2)) | ((y1 + h1) < y2) | (y1 > (y2 + h2))) {
+            return false;
+        }
+        return true;
     }
-    return true;
-}
 
     method void dispose() {
+        var int i;
+        var OpposingVehicle enemy;
+        
         do player.dispose();
+
+        let i = 0;
+        while (i < enemiesCount) {
+            let enemy = enemies[i];
+            do enemy.dispose();
+            let i = i + 1;
+        }
+
         do Memory.deAlloc(enemies);
         do road.dispose();
         do rnd.dispose();
         do ui.dispose();
+        do Memory.deAlloc(enemySpawnYCoords);
         do Memory.deAlloc(this);
+        
         return;
     }
 }
