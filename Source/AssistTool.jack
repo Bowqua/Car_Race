@@ -1,4 +1,15 @@
 class AssistTool {
+    field int draw_pixel;
+    field int draw_line;
+    field int draw_rectangle;
+
+    constructor AssistTool new() {
+        let draw_pixel = 0;
+        let draw_line = 1;
+        let draw_rectangle = 2;
+        return this;
+    }
+
     function int mod(int number, int base) {
         while (~(number < base)) {
             let number = number - base;
@@ -9,25 +20,18 @@ class AssistTool {
         return number;
     }
 
-    function int abs(int number) {
-        if (number < 0) {
-            let number = -number;
+    function void draw(int type, int x1, int y1, int x2, int y2, int xShift, int yShift) {
+        if (type = draw_line) {
+            do Screen.drawPixel(x1 + xShift, y1 + yShift);
+        } else {
+            if (type = draw_line) {
+                do Screen.drawLine(x1 + xShift, y1 + yShift, x2 + xShift, y2 + yShift);
+            } else {
+                if (type = draw_rectangle) {
+                    do Screen.drawRectangle(x1 + xShift, y1 + yShift, x2 + xShift, y2 + yShift);
+                }
+            }
         }
-        return number;
-    }
-
-    function void drawRectangleByShift(int x1, int y1, int x2, int y2, int xShift, int yShift) {
-        do Screen.drawRectangle(x1 + xShift, y1 + yShift, x2 + xShift, y2 + yShift);
-        return;
-    }
-
-    function void drawLineByShift(int x1, int y1, int x2, int y2, int xShift, int yShift) {
-        do Screen.drawLine(x1 + xShift, y1 + yShift, x2 + xShift, y2 + yShift);
-        return;
-    }
-
-    function void drawPixelByShift(int x, int y, int xShift, int yShift) {
-        do Screen.drawPixel(x + xShift, y + yShift);
         return;
     }
 }
