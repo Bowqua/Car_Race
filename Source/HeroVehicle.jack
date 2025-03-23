@@ -4,7 +4,7 @@ class HeroVehicle {
     field int margin;
 
     constructor HeroVehicle new(int Ax, int Ay) {
-        let x = 400 - xSize - margin;
+        let x = 100 - xSize - margin;
         let y = Ay;
         let xSize = 48;
         let ySize = 32;
