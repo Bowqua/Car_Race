@@ -20,8 +20,8 @@ class AssistTool {
         return number;
     }
 
-    function void draw(int type, int x1, int y1, int x2, int y2, int xShift, int yShift) {
-        if (type = draw_line) {
+    method void draw(int type, int x1, int y1, int x2, int y2, int xShift, int yShift) {
+        if (type = draw_pixel) {
             do Screen.drawPixel(x1 + xShift, y1 + yShift);
         } else {
             if (type = draw_line) {
