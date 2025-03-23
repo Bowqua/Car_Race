@@ -13,36 +13,37 @@ class RaceGame {
     field Array enemySpawnYCoords;  
 
     constructor RaceGame new() {
-        var int i;
-        var OpposingVehicle currentEnemy;
-        let score = 0;
-        let isRunning = true;
-        let player = HeroVehicle.new(26, 96);
-        let enemiesCount = 8;
-        let enemies = Array.new(enemiesCount);
-        let i = 0;
-
-        while (i < enemiesCount) {
-            let enemies[i] = OpposingVehicle.new(16, 16);
-            let currentEnemy = enemies[i];
-            do currentEnemy.die();  
-            let i = i + 1;
-        }
-
-        let road = Road.new();
-        let ui = Interface.new();
-        let rnd = Random.new(12345); 
-        let spawnRate = 20; 
-        let enemySpeed = 5;
-        let tick = 0;
-        let enemySpawnYCoords = Array.new(4);
-        let enemySpawnYCoords[0] = 16;
-        let enemySpawnYCoords[1] = 80;
-        let enemySpawnYCoords[2] = 144;
-        let enemySpawnYCoords[3] = 208;
-
-        return this;
+    var int i;
+    var OpposingVehicle currentEnemy;
+    let score = 0;
+    let isRunning = true;
+    let player = HeroVehicle.new(26, 96);
+    let enemiesCount = 6;
+    let enemies = Array.new(enemiesCount);
+    let i = 0;
+    while (i < enemiesCount) {
+        let enemies[i] = OpposingVehicle.new(16, 16);
+        let currentEnemy = enemies[i];
+        do currentEnemy.die();  
+        let i = i + 1;
     }
+
+    let road = Road.new();
+    let ui = Interface.new();
+    let rnd = Random.new(12345); 
+    let spawnRate = 35; 
+    let enemySpeed = 5;
+    let tick = 0;
+    
+    let enemySpawnYCoords = Array.new(4);
+    let i = 0;  
+    while (i < 4) {
+        let enemySpawnYCoords[i] = 16 + (64 * i);
+        let i = i + 1;
+    }
+    
+    return this;
+}
 
     method void run() {
         var int deadCount;
@@ -51,10 +52,10 @@ class RaceGame {
         while (~(Keyboard.keyPressed() = 128)) { }
         do Screen.clearScreen();
 
-        while (isRunning = false) {
+        while (~(isRunning = false)) {
             let key = Keyboard.keyPressed();
-            if (key = 65) { do player.move(-5, 0); }
-            if (key = 68) { do player.move(5, 0); }
+            if (key = 131) { do player.move(0, -10); }
+            if (key = 133) { do player.move(0, 10); }
             if (key = 140) { let isRunning = false; }
 
             do moveEnemies();
@@ -73,7 +74,7 @@ class RaceGame {
             }
 
             do drawFrame();
-            do Sys.wait(20);
+            do Sys.wait(10);
         }
 
         do ui.drawFinalWindow(score);
@@ -99,7 +100,7 @@ class RaceGame {
             let enemy = enemies[i];
             if (enemy.isAlive()) {
                 do enemy.move(-enemySpeed, 0);
-                if (enemy.getX() < 0) {
+                if (enemy.getX() < -10) {
                     do enemy.die();
                 }
             }
