@@ -1,6 +1,6 @@
 class AssistTool {
     function int mod(int number, int base) {
-        while (number > base) {
+        while (~(number < base)) {
             let number = number - base;
         }
         while (number < 0) {
