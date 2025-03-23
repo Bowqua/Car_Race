@@ -38,6 +38,7 @@ class Interface {
         do Memory.deAlloc(welcomeMessage);
         do Memory.deAlloc(scoreMessage);
         do Memory.deAlloc(finalMessage);
+        do Memory.deAlloc(this);
         return;
     }
 }
