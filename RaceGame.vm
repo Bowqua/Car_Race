@@ -1,0 +1,545 @@
+function RaceGame.new 2
+    push constant 12
+    call Memory.alloc 1
+    pop pointer 0
+    push constant 0
+    pop this 1
+    push constant 1
+    neg
+    pop this 0
+    push constant 26
+    push constant 96
+    call HeroVehicle.new 2
+    pop this 2
+    push constant 6
+    pop this 4
+    push this 4
+    call Array.new 1
+    pop this 3
+    push constant 0
+    pop local 0
+label RaceGame_0
+    push local 0
+    push this 4
+    lt
+    not
+    if-goto RaceGame_1
+    push local 0
+    push this 3
+    add
+    push constant 16
+    push constant 16
+    call OpposingVehicle.new 2
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push this 3
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call OpposingVehicle.die 1
+    pop temp 0
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto RaceGame_0
+label RaceGame_1
+    call Road.new 0
+    pop this 5
+    call Interface.new 0
+    pop this 6
+    push constant 12345
+    call Random.new 1
+    pop this 7
+    push constant 35
+    pop this 9
+    push constant 5
+    pop this 10
+    push constant 0
+    pop this 8
+    push constant 4
+    call Array.new 1
+    pop this 11
+    push constant 0
+    pop local 0
+label RaceGame_2
+    push local 0
+    push constant 4
+    lt
+    not
+    if-goto RaceGame_3
+    push local 0
+    push this 11
+    add
+    push constant 16
+    push constant 64
+    push local 0
+    call Math.multiply 2
+    add
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto RaceGame_2
+label RaceGame_3
+    push pointer 0
+    return
+function RaceGame.run 2
+    push argument 0
+    pop pointer 0
+    push this 6
+    call Interface.drawWelcomeWindow 1
+    pop temp 0
+label RaceGame_4
+    call Keyboard.keyPressed 0
+    push constant 128
+    eq
+    not
+    not
+    if-goto RaceGame_5
+    goto RaceGame_4
+label RaceGame_5
+    call Screen.clearScreen 0
+    pop temp 0
+label RaceGame_6
+    push this 0
+    push constant 0
+    eq
+    not
+    not
+    if-goto RaceGame_7
+    call Keyboard.keyPressed 0
+    pop local 1
+    push local 1
+    push constant 131
+    eq
+    not
+    if-goto RaceGame_9
+    push this 2
+    push constant 0
+    push constant 10
+    neg
+    call HeroVehicle.move 3
+    pop temp 0
+    goto RaceGame_8
+label RaceGame_9
+label RaceGame_8
+    push local 1
+    push constant 133
+    eq
+    not
+    if-goto RaceGame_11
+    push this 2
+    push constant 0
+    push constant 10
+    call HeroVehicle.move 3
+    pop temp 0
+    goto RaceGame_10
+label RaceGame_11
+label RaceGame_10
+    push local 1
+    push constant 140
+    eq
+    not
+    if-goto RaceGame_13
+    push constant 0
+    pop this 0
+    goto RaceGame_12
+label RaceGame_13
+label RaceGame_12
+    push pointer 0
+    call RaceGame.moveEnemies 1
+    pop temp 0
+    push this 5
+    push this 10
+    call Road.moveMarking 2
+    pop temp 0
+    push this 8
+    push constant 1
+    add
+    pop this 8
+    push this 8
+    push this 9
+    eq
+    not
+    if-goto RaceGame_15
+    push pointer 0
+    call RaceGame.trySpawnEnemy 1
+    pop temp 0
+    push constant 0
+    pop this 8
+    goto RaceGame_14
+label RaceGame_15
+label RaceGame_14
+    push pointer 0
+    call RaceGame.handleEnemyPasses 1
+    pop local 0
+    push this 1
+    push local 0
+    add
+    pop this 1
+    push pointer 0
+    call RaceGame.handleCollision 1
+    not
+    if-goto RaceGame_17
+    push constant 0
+    pop this 0
+    goto RaceGame_16
+label RaceGame_17
+label RaceGame_16
+    push pointer 0
+    call RaceGame.drawFrame 1
+    pop temp 0
+    push constant 10
+    call Sys.wait 1
+    pop temp 0
+    goto RaceGame_6
+label RaceGame_7
+    push this 6
+    push this 1
+    call Interface.drawFinalWindow 2
+    pop temp 0
+label RaceGame_18
+    call Keyboard.keyPressed 0
+    push constant 128
+    eq
+    not
+    not
+    if-goto RaceGame_19
+    goto RaceGame_18
+label RaceGame_19
+    push constant 0
+    return
+function RaceGame.drawFrame 0
+    push argument 0
+    pop pointer 0
+    call Screen.clearScreen 0
+    pop temp 0
+    push this 5
+    call Road.drawMarking 1
+    pop temp 0
+    push this 2
+    call HeroVehicle.draw 1
+    pop temp 0
+    push pointer 0
+    call RaceGame.drawEnemies 1
+    pop temp 0
+    push this 6
+    push this 1
+    call Interface.drawPlayerScore 2
+    pop temp 0
+    push constant 0
+    return
+function RaceGame.moveEnemies 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label RaceGame_20
+    push local 0
+    push this 4
+    lt
+    not
+    if-goto RaceGame_21
+    push local 0
+    push this 3
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call OpposingVehicle.isAlive 1
+    not
+    if-goto RaceGame_23
+    push local 1
+    push this 10
+    neg
+    push constant 0
+    call OpposingVehicle.move 3
+    pop temp 0
+    push local 1
+    call OpposingVehicle.getX 1
+    push constant 10
+    neg
+    lt
+    not
+    if-goto RaceGame_25
+    push local 1
+    call OpposingVehicle.die 1
+    pop temp 0
+    goto RaceGame_24
+label RaceGame_25
+label RaceGame_24
+    goto RaceGame_22
+label RaceGame_23
+label RaceGame_22
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto RaceGame_20
+label RaceGame_21
+    push constant 0
+    return
+function RaceGame.drawEnemies 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label RaceGame_26
+    push local 0
+    push this 4
+    lt
+    not
+    if-goto RaceGame_27
+    push local 0
+    push this 3
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call OpposingVehicle.isAlive 1
+    not
+    if-goto RaceGame_29
+    push local 1
+    call OpposingVehicle.draw 1
+    pop temp 0
+    goto RaceGame_28
+label RaceGame_29
+label RaceGame_28
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto RaceGame_26
+label RaceGame_27
+    push constant 0
+    return
+function RaceGame.trySpawnEnemy 3
+    push argument 0
+    pop pointer 0
+    push this 7
+    push constant 4
+    call Random.next 2
+    pop local 1
+    push constant 0
+    pop local 0
+label RaceGame_30
+    push local 0
+    push this 4
+    lt
+    not
+    if-goto RaceGame_31
+    push local 0
+    push this 3
+    add
+    pop pointer 1
+    push that 0
+    pop local 2
+    push local 2
+    call OpposingVehicle.isAlive 1
+    not
+    not
+    if-goto RaceGame_33
+    push local 2
+    push constant 512
+    push local 2
+    call OpposingVehicle.getXSize 1
+    sub
+    push local 1
+    push this 11
+    add
+    pop pointer 1
+    push that 0
+    call OpposingVehicle.reborn 3
+    pop temp 0
+    push constant 0
+    return
+    goto RaceGame_32
+label RaceGame_33
+label RaceGame_32
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto RaceGame_30
+label RaceGame_31
+    push constant 0
+    return
+function RaceGame.handleEnemyPasses 3
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 1
+    push constant 0
+    pop local 0
+label RaceGame_34
+    push local 0
+    push this 4
+    lt
+    not
+    if-goto RaceGame_35
+    push local 0
+    push this 3
+    add
+    pop pointer 1
+    push that 0
+    pop local 2
+    push local 2
+    call OpposingVehicle.isAlive 1
+    not
+    if-goto RaceGame_37
+    push local 2
+    call OpposingVehicle.getX 1
+    push constant 0
+    lt
+    not
+    if-goto RaceGame_39
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    push local 2
+    call OpposingVehicle.die 1
+    pop temp 0
+    goto RaceGame_38
+label RaceGame_39
+label RaceGame_38
+    goto RaceGame_36
+label RaceGame_37
+label RaceGame_36
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto RaceGame_34
+label RaceGame_35
+    push local 1
+    return
+function RaceGame.handleCollision 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label RaceGame_40
+    push local 0
+    push this 4
+    lt
+    not
+    if-goto RaceGame_41
+    push local 0
+    push this 3
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call OpposingVehicle.isAlive 1
+    not
+    if-goto RaceGame_43
+    push pointer 0
+    push this 2
+    call HeroVehicle.getX 1
+    push this 2
+    call HeroVehicle.getY 1
+    push local 1
+    call OpposingVehicle.getX 1
+    push local 1
+    call OpposingVehicle.getY 1
+    push this 2
+    call HeroVehicle.getXSize 1
+    push this 2
+    call HeroVehicle.getYSize 1
+    push local 1
+    call OpposingVehicle.getXSize 1
+    push local 1
+    call OpposingVehicle.getYSize 1
+    call RaceGame.doCollision 9
+    not
+    if-goto RaceGame_45
+    push constant 1
+    neg
+    return
+    goto RaceGame_44
+label RaceGame_45
+label RaceGame_44
+    goto RaceGame_42
+label RaceGame_43
+label RaceGame_42
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto RaceGame_40
+label RaceGame_41
+    push constant 0
+    return
+function RaceGame.doCollision 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    push argument 5
+    add
+    push argument 3
+    lt
+    push argument 1
+    push argument 3
+    push argument 7
+    add
+    gt
+    or
+    push argument 2
+    push argument 6
+    add
+    push argument 4
+    lt
+    or
+    push argument 2
+    push argument 4
+    push argument 8
+    add
+    gt
+    or
+    not
+    if-goto RaceGame_47
+    push constant 0
+    return
+    goto RaceGame_46
+label RaceGame_47
+label RaceGame_46
+    push constant 1
+    neg
+    return
+function RaceGame.dispose 0
+    push argument 0
+    pop pointer 0
+    push this 2
+    call HeroVehicle.dispose 1
+    pop temp 0
+    push this 3
+    call Memory.deAlloc 1
+    pop temp 0
+    push this 5
+    call Road.dispose 1
+    pop temp 0
+    push this 7
+    call Random.dispose 1
+    pop temp 0
+    push this 6
+    call Interface.dispose 1
+    pop temp 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
+    return
