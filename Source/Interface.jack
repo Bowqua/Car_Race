@@ -4,7 +4,7 @@ class Interface {
     field String finalMessage;
 
     constructor Interface new() {
-        let welcomeMessage = "Press Enter to Start. Use A/D to move. ESC to quit.";
+        let welcomeMessage = "Press Enter to Start. Use arrow-up/arrow-down to move. ESC to quit.";
         let scoreMessage = "Score: ";
         let finalMessage = "Game Over.";
         return this;
